@@ -1,7 +1,6 @@
 import { BrowserRouter,Route,Routes } from 'react-router-dom';
-import Home from './Components/home';
-import Login from './Components/Chat_menu';
-
+import Home from './home';
+import Login from './login';
 
 
 

@@ -1,0 +1,13 @@
+.webcam-container {
+  border-radius: 20px;
+}
+.webcam-container video {
+    /* Ensure the video element also has rounded corners */
+    border-radius: inherit;
+    max-width: fit-content;
+    max-height: fit-content;
+    position:relative;
+    /* Remove any default borders or margins */
+    border: none;
+    margin-right: 2rem;
+}
