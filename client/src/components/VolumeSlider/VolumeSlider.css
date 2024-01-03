@@ -10,6 +10,7 @@
   .volume-slider-label {
     margin-bottom: 8px;
     font-weight: bold;
+    color: white;
   }
   
   .volume-slider-input {
@@ -22,5 +23,6 @@
   
   .volume-slider-value {
     margin-top: 8px;
+    color: white;
   }
   

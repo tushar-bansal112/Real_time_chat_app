@@ -1,42 +1,67 @@
-import './home.css';
+import React, { useContext } from 'react'
+import videobg from './videos/background.mp4';
 import Vector from './images/Vector.svg'
-import logo from './images/Group.png'
-import { useNavigate } from "react-router-dom";
+import './home.css';
+import VideoComponent from './components/VideoComponent/VideoComponent';
+import ChatButton from './components/ChatButton/ChatButton';
+import ChatMsg from './components/ChatMsg/ChatMsg';
+import PauseButton from './components/PauseButton/PauseButton';
+import { AppContext } from './Context/AppContext';
+import VideoComponent2 from './components/VideoComponent2/VideoComponent2';
+import InputBox from './components/InputBox/InputBox';
 
-function Home() {
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("/login");
+
+
+function Login() {
+
+  const { messages, setMessages, speechRecognition, setSpeechRecognition, isListening, setIsListening,flag,setflag } = useContext(AppContext);
+  const Video =() =>{
+    return(
+      <div>
+        <div className="vid_container">
+            <VideoComponent />
+          </div>
+          <div className="chat_container">
+            <div className="chat_msg">
+              <ChatMsg/>
+              <ChatButton />
+            </div>
+            <PauseButton/>
+          </div>
+      </div>
+    )
   }
+
+  const Chat =() =>{
+    return(
+      <div>
+        <div className='chat_box'>
+              <ChatMsg/>
+              <InputBox/>
+            </div>
+            <div className="chat_container">
+                <VideoComponent2/>
+                <PauseButton/>
+            </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="home" >
-      <div className='background_img'>
+    <div className="chat" >
+        <video autoPlay loop muted>
+          <source src={videobg} type="video/mp4"></source>
+        </video>
         <div className='navbar'>
           <img className="img" src={Vector} alt="vector"/>
         </div>
-        <div className='container'>
-          <div className='welcome'>
-            <img className="logo_img" src = {logo} alt="logo"/>
-            <div className='init_msg'>Welcome to </div> 
-            <div className='init_msg'>goodspace communication </div>
-          </div>
-          <div className='login_container'>
-            <div className='signup'>
-              Signup/Login
-            </div>
-            <form>
-              <label >Your Email Id</label>
-              <input type="text" autoFocus id="email" autoComplete="off"/>
-              <label  className="pass" >Password</label>
-              <input type="password" id="password" autoComplete="off"/>
-              <button className="loginBtn" type="submit" onClick={handleClick}>Let's Go!!</button>
-            </form>
-          </div>
+        <div className="main_container">
+        {flag? Chat() : Video()}
+          
         </div>
-        
-      </div>
     </div>
-  );
+  )
 }
 
-export default Home;
+
+export default Login;

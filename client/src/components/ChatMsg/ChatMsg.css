@@ -1,0 +1,30 @@
+.chat_bot {
+    display: flex;
+    justify-content: center;
+
+  }
+  
+  
+  
+  
+  
+  .user-message {
+    display: flex;
+    flex-direction: row-reverse;
+    background-color: #e2f7cb;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+  }
+  
+  .bot-message {
+    display: flex;
+    flex-direction: row;
+    background-color: #c2d6e0;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+  }
+  
+
+  

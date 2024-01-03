@@ -1,18 +1,24 @@
+import React from 'react';
 import { BrowserRouter,Route,Routes } from 'react-router-dom';
-import Home from './home';
+import {AppProvider} from './Context/AppContext'
 import Login from './login';
+import Home from './home';
 
 
 
 function App() {
+
   return (
     <div className="App" >
-      <BrowserRouter>
-        <Routes>
-            <Route exact path="/" element={<Home/>}/>
-            <Route exact path="/login" element={<Login/>}/>
-        </Routes>
-      </BrowserRouter>
+      <AppProvider>
+        <BrowserRouter>
+          <Routes>
+              <Route exact path="/" element={<Login/>}/>
+              <Route exact path="/home" element={<Home/>}/>
+          </Routes>
+        </BrowserRouter>
+      </AppProvider>
+      
     </div>
   );
 }

@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import "./MuteButton.css";
+import { AppContext } from '../../Context/AppContext';
 
 const SvgButton = () => {
-  const handleButtonClick = () => {
-    // Your button click logic here
-    console.log('Button clicked!');
+  const { messages, setMessages, speechRecognition, setSpeechRecognition, isListening, setIsListening } = useContext(AppContext);
+  const toggleListening = () => {
+    if (speechRecognition) {
+      if (isListening) {
+        speechRecognition.stop();
+      } else {
+        speechRecognition.start();
+      }
+      setIsListening(!isListening);
+    }
   };
 
   return (
-    <button onClick={handleButtonClick} >
+    <button onClick={toggleListening} >
       <div>
         <svg width="80" height="80" viewBox="0 0 142 142" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g id="Group 1171279476">

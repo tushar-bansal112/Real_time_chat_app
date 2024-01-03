@@ -1,0 +1,16 @@
+.video_container{
+    display: flex;
+    border: 0.1px solid gray;
+    border-radius: 20px;
+    padding: 10px;
+    backdrop-filter: blur(6px);
+}
+
+.webcam_feed .webcam-container video {
+    width: 550px;
+    height: 130px;
+  }
+  .vid-button{
+    margin-left: 50px;
+    display: flex;
+  }

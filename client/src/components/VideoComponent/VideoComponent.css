@@ -9,7 +9,7 @@
   flex: 0 0 60%;
 }
 .webcam-feed .webcam-container video {
-  max-width: 20rem;
+  max-width: 24rem;
   max-height: 12rem;  
 }
 

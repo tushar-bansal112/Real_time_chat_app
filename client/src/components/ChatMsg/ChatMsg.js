@@ -1,29 +1,56 @@
 
-import React, { useState } from 'react';
+import React, {useEffect, useContext } from 'react';
+import './ChatMsg.css'
+import { AppContext } from '../../Context/AppContext';
+
 
 const ChatMsg = () => {
-  const [messages, setMessages] = useState([]);
+  const { messages, setMessages, speechRecognition, setSpeechRecognition, isListening, setIsListening,flag,setflag } = useContext(AppContext);
 
-  const handleUserMessage = (text) => {
-    setMessages([...messages, { text, sender: 'user' }]);
+  useEffect(() => {
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.continuous = false;
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      handleSendMessage(transcript);
+    };
+    setSpeechRecognition(recognition);
+  }, []);
 
-    // Simulate bot response (replace with actual bot logic)
+  const toggleListening = () => {
+    if (speechRecognition) {
+      if (isListening) {
+        speechRecognition.stop();
+      } else {
+        speechRecognition.start();
+      }
+      setIsListening(!isListening);
+    }
+  };
+  const autoReply =() =>{
     setTimeout(() => {
-      setMessages([...messages, { text: 'Hello, I am a chatbot!', sender: 'bot' }]);
+      setMessages(messages => [...messages, { text: "I'm a simple chatbot!", isUser: false }])
     }, 500);
+  }
+  const handleSendMessage = (msg) => {
+    setMessages(messages => [...messages, { text: msg, isUser: true }])
+    autoReply();
+    
   };
 
+
   return (
-    <div>
-      <div >
-        {messages.map((message, index) => (
-          <div key={index} style={{ textAlign: message.sender === 'user' ? 'right' : 'left' }}>
-            <span>{message.sender === 'user' ? 'You: ' : 'Bot: '}</span>
-            {message.text}
-          </div>
-        ))}
+    <div className="chat_bot">
+      <div className="chat-container">
+        <div className="chat-messages">
+          {messages.map((message, index) => (
+            <div key={index} className={message.isUser ? "user-message" : "bot-message"}>
+              {message.text}
+            </div>
+          ))}
+        </div>
       </div>
-      
     </div>
   );
 };

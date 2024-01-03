@@ -1,15 +1,17 @@
-import React from 'react';
-
-
+import React, { useContext } from 'react';
+import { AppContext } from '../../Context/AppContext';
 const ChatSvgButton = () => {
-  const handleButtonClick = () => {
-    console.log('Button clicked!');
-  };
 
+  const { messages, setMessages, speechRecognition, setSpeechRecognition, isListening, setIsListening,flag,setflag } = useContext(AppContext);
+
+
+  const handleButtonClick = () => {
+    setflag(!flag)
+  }
   return (
     <button onClick={handleButtonClick} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>
       <div>
-      <svg width="142" height="142" viewBox="0 0 142 142" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="80" height="80" viewBox="0 0 142 142" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g id="Group 1171279476">
         <circle id="Ellipse 43" cx="70.6667" cy="70.6667" r="70.6667" fill="#0084FF" fill-opacity="0.2"/>
         <circle id="Ellipse 44" cx="70.1666" cy="71.1666" r="53.8413" transform="rotate(-0.347239 70.1666 71.1666)" fill="#0084FF" fill-opacity="0.5"/>

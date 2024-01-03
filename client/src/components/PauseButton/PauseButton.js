@@ -1,5 +1,5 @@
 import React from 'react';
-
+import './PauseButton.css'
 
 const PauseSvgButton = () => {
   const handleButtonClick = () => {
@@ -10,7 +10,7 @@ const PauseSvgButton = () => {
     <div className="pause_btn">
         <button onClick={handleButtonClick} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>
         <div>
-            <svg width="142" height="142" viewBox="0 0 142 142" fill="none" xmlns="http://www.w3.org/2000/svg" >
+            <svg width="80" height="80" viewBox="0 0 142 142" fill="none" xmlns="http://www.w3.org/2000/svg" >
                 <circle id="Ellipse 43" cx="71.1559" cy="70.6667" r="70.6667" fill="#0084FF" fill-opacity="0.2"/>
                 <svg x="15" y="15" width="109" height="109" viewBox="0 0 109 109" fill="none" xmlns="http://www.w3.org/2000/svg" >
                     <circle id="Ellipse 44" cx="54.8082" cy="54.6663" r="53.8413" transform="rotate(-0.347239 54.8082 54.6663)" fill="#0084FF" fill-opacity="0.5"/>
