@@ -1,24 +1,30 @@
 import React from 'react';
-import { BrowserRouter,Route,Routes } from 'react-router-dom';
+import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import {AppProvider} from './Context/AppContext'
 import Login from './login';
 import Home from './home';
 
-
-
 function App() {
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
+  //For SignOut
+  const signUserOut = () => {
+    localStorage.clear();
+    setToken(false);
+    window.location.pathname = "/";
+  };
   return (
+    
     <div className="App" >
       <AppProvider>
-        <BrowserRouter>
-          <Routes>
-              <Route exact path="/" element={<Login/>}/>
-              <Route exact path="/home" element={<Home/>}/>
-          </Routes>
-        </BrowserRouter>
+      <Router>
+        <Routes>
+            <Route exact path="/" element={<Login setToken = {setToken}/>}/>
+            <Route exact path="/home" element={<Home token = {token}/>}/>
+        </Routes>
+      </Router>
       </AppProvider>
-      
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { React,  useContext, useEffect } from 'react'
 import videobg from './videos/background.mp4';
 import Vector from './images/Vector.svg'
 import './home.css';
@@ -9,10 +9,19 @@ import PauseButton from './components/PauseButton/PauseButton';
 import { AppContext } from './Context/AppContext';
 import VideoComponent2 from './components/VideoComponent2/VideoComponent2';
 import InputBox from './components/InputBox/InputBox';
+import { useNavigate } from 'react-router-dom';
 
 
 
-function Home() {
+const Home = ({ token }) => {
+  let navigate = useNavigate();
+  //If user is not logged in
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+  }, []);
 
   const { messages, setMessages, speechRecognition, setSpeechRecognition, isListening, setIsListening,flag,setflag } = useContext(AppContext);
   const Video =() =>{

@@ -7,7 +7,8 @@ import OpenAI from "openai";
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
 import { User } from "./model/user.js";
-import { auth } from "./auth.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -62,19 +63,23 @@ mongoose
 // Login
 app.post("/api/login", async (req, res) => {
   // Our login logic starts here
+
+  // console.log(req.body);
+  // return res.status(200);
   try {
     // Get user input
-    const data = JSON.parse(req.body.formData); // change accoringly
+    // const data = JSON.parse(req.body); // change accoringly
+    const data = req.body;
     const { email, password } = data;
 
-    const user = await User.findOne({ email });
+    var user = await User.findOne({ email });
     if (!(email && password)) {
       return res.status(400).send("All input is required");
     }
     // Validate if user exist in our database
     if (user === null) {
       //Encrypt user password
-      encryptedPassword = await bcrypt.hash(password, 10);
+      var encryptedPassword = await bcrypt.hash(password, 10);
 
       // Create user in our database
       user = await User.create({
