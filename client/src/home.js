@@ -12,7 +12,7 @@ import InputBox from './components/InputBox/InputBox';
 
 
 
-function Login() {
+function Home() {
 
   const { messages, setMessages, speechRecognition, setSpeechRecognition, isListening, setIsListening,flag,setflag } = useContext(AppContext);
   const Video =() =>{
@@ -64,4 +64,4 @@ function Login() {
 }
 
 
-export default Login;
+export default Home;

@@ -3,7 +3,7 @@ import Vector from './images/Vector.svg'
 import logo from './images/Group.png'
 import { useNavigate } from "react-router-dom";
 
-function Home() {
+function Login() {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/home");
@@ -39,4 +39,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Login;
