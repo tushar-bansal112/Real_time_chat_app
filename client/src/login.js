@@ -25,16 +25,16 @@ function Login( {setToken} ) {
 
     try {
       // Make Axios request with email and password
-      const response = await axios.post('/api/login', {
+      await axios.post('/api/login', {
         email,
         password,
       })
       .then(function (response) {
         console.log(response);
-        localStorage.setItem("token", JSON.stringify(response.data.token));
+        localStorage.setItem("token", JSON.stringify(response.data));
         
         const token = localStorage.getItem("token");
-        setToken(JSON.stringify(response.data.token));
+        setToken(JSON.stringify(response.data));
         navigate("/home");
       })
       .catch((err) => {

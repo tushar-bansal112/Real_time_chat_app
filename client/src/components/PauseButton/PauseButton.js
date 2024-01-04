@@ -1,9 +1,13 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import './PauseButton.css'
+import { AppContext } from '../../Context/AppContext';
 
 const PauseSvgButton = () => {
+  const {
+    cancel
+  } = useContext(AppContext);
   const handleButtonClick = () => {
-    console.log('Button clicked!');
+    cancel();
   };
 
   return (

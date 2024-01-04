@@ -9,6 +9,9 @@ import { Server, Socket } from "socket.io";
 import { User } from "./model/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { Conversation } from "./model/conversation.js";
+import {auth} from "./auth.js";
+import { log } from "console";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -29,15 +32,27 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("Connected to socket.io");
 
-  socket.on("new message", (newMessage) => {
+  socket.on("request", (req) => {
     async function OpenAITextCompletion() {
       console.log("Question received!");
       const completion = await openai.chat.completions.create({
-        messages: [{ role: "user", content: newMessage }],
+        messages: [{ role: "user", content: req.message }],
         model: "gpt-3.5-turbo",
       });
       console.log("Replied!");
-      socket.emit("reply", completion.choices[0].message.content);
+      const reply = completion.choices[0].message.content
+      socket.emit("reply", reply);
+      console.log(req.user);
+      // save this in database
+      var newConversation = await Conversation.create({
+        userId: req.userId,
+        message: req.message,
+        reply: reply
+      })
+      .catch(error => {
+        console.error('Error saving conversation in db:', error);
+      });
+      console.log(newConversation);
     }
     OpenAITextCompletion();
   });
@@ -85,6 +100,9 @@ app.post("/api/login", async (req, res) => {
       user = await User.create({
         email: email.toLowerCase(), // sanitize: convert email to lowercase
         password: encryptedPassword,
+      })
+      .catch(error => {
+        console.error('Error saving user in db:', error);
       });
     }
 
@@ -95,7 +113,7 @@ app.post("/api/login", async (req, res) => {
     if (await bcrypt.compare(password, user.password)) {
       // Create token
       // const token_key = "abcdefgh";
-      const token = jwt.sign({ email }, process.env.TOKEN_KEY, {
+      const token = jwt.sign({ email, id }, process.env.TOKEN_KEY, {
         expiresIn: "2h",
       });
       // save user token
@@ -104,8 +122,13 @@ app.post("/api/login", async (req, res) => {
         localStorage.setItem("token", token);
       }
 
-      // user
-      return res.status(200).json(user);
+      // return frontend user
+     
+      return res.status(200).json({
+        email: user.email,
+        _id: user._id,
+        token: user.token,
+      }); 
     } else {
       return res.status(400).send("Invalid Credentials");
     }
@@ -114,6 +137,36 @@ app.post("/api/login", async (req, res) => {
     return res.status(500).send("err");
   }
 });
+
+
+app.post('/api/getUserConvo', auth, async (req, res) => {
+  try {
+    // Use the Conversation model to query the database
+
+    const currentUser = jwt.verify(req.body.token, process.env.TOKEN_KEY);
+    console.log(currentUser);
+    const userId = currentUser.id;
+
+    const result = await Conversation.find( { userId } )
+      .sort({ timestamp: -1 }) // Sort by timestamp in descending order
+      .limit(100); // Limit to 100 documents
+
+    
+    // console.log('Latest 100 conversations:', result);
+    res.status(200).json({
+      success: true,
+      message: `Latest 100 conversations for userId ${userId}:`,
+      data: result,
+    });
+  } catch (error) {
+    console.error('Error querying MongoDB:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+    });
+  }
+});
+
 app.get("/api/logout", async () => {
   localStorage.setItem("token", null);
   return res.status(200);
@@ -122,4 +175,25 @@ app.get("/api/logout", async () => {
 
 server.listen(PORT, () => {
   console.log("Server is running...");
+});
+
+
+
+////////////////////// testing routes delete later ///////////////////////
+
+
+app.get('/test', async (req, res) => {
+  try {
+    // Retrieve all documents from the 'conversations' collection
+    const conversations = await Conversation.find({});
+
+    // Log the conversations
+    console.log('All conversations:', conversations);
+
+    // Respond with the conversations as JSON
+    res.status(200).json(conversations);
+  } catch (error) {
+    console.error('Error retrieving conversations:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });

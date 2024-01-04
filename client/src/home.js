@@ -32,7 +32,7 @@ const Home = ({ token }) => {
           </div>
           <div className="chat_container">
             <div className="chat_msg">
-              <ChatMsg/>
+              <ChatMsg token={token} />
               <ChatButton />
             </div>
             <PauseButton/>
@@ -45,7 +45,7 @@ const Home = ({ token }) => {
     return(
       <div>
         <div className='chat_box'>
-              <ChatMsg/>
+              <ChatMsg token={token}/>
               <InputBox/>
             </div>
             <div className="chat_container">

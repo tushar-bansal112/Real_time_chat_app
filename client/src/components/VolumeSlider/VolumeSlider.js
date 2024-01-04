@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import "./VolumeSlider.css";
+import { AppContext } from '../../Context/AppContext';
 
 const VolumeSlider = () => {
-  const [volume, setVolume] = useState(50);
+  
+  const {
+    volume,
+    setVolume
+  } = useContext(AppContext);
 
   const handleVolumeChange = (event) => {
     const newVolume = event.target.value;
